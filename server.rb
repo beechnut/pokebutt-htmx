@@ -2,6 +2,11 @@ require 'sinatra'
 require 'net/http'
 require 'json'
 
+# get '/b' do
+#   erb :b
+# end
+
+
 POKEMON_RANGE = (1..151)
 
 get '/' do
@@ -9,10 +14,11 @@ get '/' do
 end
 
 post '/load' do
+  puts "PARAMS: #{params.inspect}"
   id = -1 # out of range, but not nil
   while true
     id = rand POKEMON_RANGE
-    break if id != params[:current]
+    break if id != params[:current].to_i
   end
   resp = get_pokemon(id)
   @pokemon = build_pokemon(resp)

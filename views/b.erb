@@ -1,0 +1,88 @@
+
+    https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.4.6/tailwind.min.css
+
+    https://codepen.io/localhorst/pen/ZEbqVZd
+    https://cdnjs.cloudflare.com/ajax/libs/collect.js/4.25.0/collect.min.js
+    https://cdn.jsdelivr.net/combine/npm/htmx.org@latest
+    https://unpkg.com/htmx.org@0.0.4/dist/ext/json-enc.js
+    https://cdnjs.cloudflare.com/ajax/libs/nunjucks/3.0.1/nunjucks.min.js
+
+
+
+
+<div
+     class="h-full bg-gray-200 text-gray-800 p-4 lg:p-8"
+     hx-ext='client-side-templates'
+>
+  <header class="flex items-center mb-3">
+   <h1 class="flex-grow">Latest Gists</h1>
+    <!-- hx-trigger="load, click" makes sure that api gets called on pageload AND on click  !-->
+    <button
+       class="py-2 px-4 rounded bg-blue-500 text-white flex-grow-0"
+       type="button"
+       hx-trigger="load, click"
+       hx-get="https://api.github.com/users/marcus-at-localhost/gists"
+       nunjucks-template="gistlist"
+       hx-target="#list"
+       hx-swap="innerHTML"
+    >
+     Reload
+    </button>
+  </header>
+
+  <script id="gistlist" type="nunjucks">
+    {% for gist in gists %}
+      <li class="relative -mb-px block border p-4 border-grey">
+        <a href="{{gist.html_url}}" class="font-bold">{{gist.parsed.title}}</a><br>
+        <small>{{gist.parsed.description}}</small>
+      </li>
+    {% endfor %}
+  </script>
+
+  <ul id="list" class="list-reset flex flex-col">
+  </ul>
+
+    <p class="mt-3 text-xs">
+      <a href="https://developer.github.com/v3/gists/" target="_blank">API</a> ·
+      <a href="https://htmx.org/" target="_blank">htmx</a> ·
+      <a href="https://tailwindcss.com/docs" target="_blank">Tailwind</a> ·
+      <a href="https://tailwindcomponents.com/component/bootstrap-4-list-group-clone" target="_blank">Tailwind Components</a> ·
+      <a href="https://github.com/hackjutsu/Lepton" target="_blank">Lepton Snipped Management</a>
+    </p>
+</div>
+
+<script>
+  htmx.logger = function(elt, event, data) {
+    if(console) {
+      //console.log(event, elt, data);
+    }
+  }
+
+  document.body.addEventListener('configRequest.htmx', function(evt) {
+    // try to remove x-hx-* headers because gist api complains about CORS
+    Object.keys(evt.detail.headers).forEach(function(key) {
+      delete evt.detail.headers[key];
+    });
+  });
+
+  htmx.defineExtension('client-side-templates', {
+    transformResponse : function(text, xhr, elt) {
+      var nunjucksTemplate = htmx.closest(elt, "[nunjucks-template]");
+        if (nunjucksTemplate) {
+          var data = {
+            gists: JSON.parse(text).map((item) => {
+              // parser : https://codepen.io/localhorst/pen/ZEbqVZd
+              item.parsed = new leptonParser().parse(item.description);
+              return item;
+            })
+          };
+
+          var templateName = nunjucksTemplate.getAttribute('nunjucks-template');
+          var template = htmx.find('#' + templateName);
+          console.log(templateName,data);
+          return nunjucks.renderString(template.innerHTML, data);
+      }
+      return text;
+    }
+  });
+</script>

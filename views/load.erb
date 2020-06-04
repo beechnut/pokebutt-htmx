@@ -2,6 +2,12 @@
 <h3 id="name" hx-swap-oob="true">
   <%= @pokemon.name %> butt
 </h3>
-<button id="button" hx-swap-oob="true" class="button" hx-post="/load?current=<%= @pokemon.id %>">
+<button
+  id="button"
+  class="button"
+  hx-post="/load"
+  hx-ext="include-vals"
+  include-vals="current: <%= @pokemon.id %>"
+  hx-swap-oob="true">
   Get a random Pokebutt
 </button>

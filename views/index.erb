@@ -4,11 +4,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.1.2/foundation.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Leckerli+One|Rock+Salt|Fresca">
     <link rel="stylesheet" href="index.css">
+
+
     <title>
       Pokebutt | HTMX
     </title>
-    <!-- Load from unpkg -->
+
     <script src="https://unpkg.com/htmx.org@0.0.4"></script>
+    <script src="https://unpkg.com/htmx.org@0.0.4/dist/ext/include-vals.js"></script>
   </head>
   <body>
     <div id="container" align="center" style="padding-top: 65px;">
@@ -17,7 +20,7 @@
       </h1>
       <img id="butt" />
       <h3 id="name"></h3>
-      <button class="button" id="button">
+      <button id="button" class="button">
         Get a random Pokebutt
       </button>
       <p id="credit">
