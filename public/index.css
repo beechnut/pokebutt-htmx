@@ -34,3 +34,17 @@ h1 {
 h3 {
   font-family: "Fresca", sans-serif;
 }
+
+#container {
+  position: relative;
+  height: 90%;
+  min-height: 450px;
+  padding: 0 100px;
+}
+
+#credit {
+  position: absolute;
+  bottom: 0;
+  left: auto;
+  align-content: center;
+}
