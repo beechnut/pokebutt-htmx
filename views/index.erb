@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.1.2/foundation.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Leckerli+One|Rock+Salt|Fresca">
+    <link rel="stylesheet" href="index.css">
+    <title>
+      Pokebutt | HTMX
+    </title>
+    <!-- Load from unpkg -->
+    <script src="https://unpkg.com/htmx.org@0.0.4"></script>
+  </head>
+  <body>
+    <div id="container" align="center" style="padding-top: 65px;">
+      <h1>
+        Pokébutt!
+      </h1>
+      <img id="butt" src="<%= @pokemon.butt_url %>" alt="<%= @pokemon.name %>">
+      <!-- have a button POST a click via AJAX -->
+      <h3 id="name">
+        <%= @pokemon.name %> butt
+      </h3>
+      <button class="button" hx-post="/clicked?current=<%= @pokemon.id %>" hx-swap="outerHTML">
+        Get a random Pokebutt
+      </button>
+    </div>
+</html>

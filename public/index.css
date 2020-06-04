@@ -1,0 +1,36 @@
+body {
+  background-color: #f5f5f5
+}
+
+img {
+  width: 96px;
+  height: 96px;
+}
+
+h1 {
+  font-family: 'Leckerli One', cursive;
+}
+
+h3 {
+  font-family: 'Fresca';
+}
+
+.main {
+  padding-top: 4em;
+}
+
+.buttons {
+
+}
+
+h1 {
+  font-family: "Leckerli One", cursive;
+  font-size: 48px;
+  color: rgb(10, 10, 10);
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+h3 {
+  font-family: "Fresca", sans-serif;
+}
