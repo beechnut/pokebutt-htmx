@@ -1,0 +1,7 @@
+<img id="butt" hx-swap-oob="true" src="<%= @pokemon.butt_url %>" alt="<%= @pokemon.name %>">
+<h3 id="name" hx-swap-oob="true">
+  <%= @pokemon.name %> butt
+</h3>
+<button id="button" hx-swap-oob="true" class="button" hx-post="/load?current=<%= @pokemon.id %>">
+  Get a random Pokebutt
+</button>

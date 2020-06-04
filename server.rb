@@ -5,13 +5,10 @@ require 'json'
 POKEMON_RANGE = (1..151)
 
 get '/' do
-  id = rand POKEMON_RANGE
-  resp = get_pokemon(id)
-  @pokemon = build_pokemon(resp)
   erb :index
 end
 
-post '/clicked' do
+post '/load' do
   id = -1 # out of range, but not nil
   while true
     id = rand POKEMON_RANGE
@@ -19,7 +16,7 @@ post '/clicked' do
   end
   resp = get_pokemon(id)
   @pokemon = build_pokemon(resp)
-  erb :clicked
+  erb :load
 end
 
 Pokemon = Struct.new(:id, :name, :butt_url)

@@ -15,16 +15,19 @@
       <h1>
         Pokébutt!
       </h1>
-      <img id="butt" src="<%= @pokemon.butt_url %>" alt="<%= @pokemon.name %>">
-      <!-- have a button POST a click via AJAX -->
-      <h3 id="name">
-        <%= @pokemon.name %> butt
-      </h3>
-      <button class="button" hx-post="/clicked?current=<%= @pokemon.id %>" hx-swap="outerHTML">
+      <img id="butt" />
+      <h3 id="name"></h3>
+      <button class="button" id="button">
         Get a random Pokebutt
       </button>
       <p id="credit">
         This is an <a href="https://htmx.org/">HTMX</a>-based clone of <a href="https://pokebutt.herokuapp.com">Laura Do's original Pokebutt app.</a>
       </p>
+      <div
+        id="initialstate"
+        style="display: none;"
+        hx-trigger="load"
+        hx-post="/load">
+      </div>
     </div>
 </html>
