@@ -6,6 +6,10 @@ require 'json'
 #   erb :b
 # end
 
+get '/c' do
+  erb :c
+end
+
 
 POKEMON_RANGE = (1..151)
 
@@ -23,6 +27,11 @@ post '/load' do
   resp = get_pokemon(id)
   @pokemon = build_pokemon(resp)
   erb :load
+end
+
+get '/some_json' do
+  content_type :json
+  { beatles: [{name: "George"}, {name: "Paul"}, {name: "John"}, {name: "Ringo"}] }.to_json
 end
 
 Pokemon = Struct.new(:id, :name, :butt_url)

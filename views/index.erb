@@ -12,25 +12,89 @@
 
     <script src="https://unpkg.com/htmx.org@0.0.4"></script>
     <script src="https://unpkg.com/htmx.org@0.0.4/dist/ext/include-vals.js"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+    <script src="https://unpkg.com/mustache@latest"></script>
+    <script type="text/javascript">
+      function pokeurl(current) {
+        current = current || -1;
+        order   = random_order()
+        if (current > 0 && order == current) {
+          order++; // Mutates the variable. Don't love that.
+        }
+        return "https://pokeapi.co/api/v2/pokemon/" + order;
+      }
+      function random_order() {
+        return Math.floor((Math.random() * 151) + 1)
+      }
+
+      // Define the extension
+      htmx.defineExtension('client-side-templates', {
+        transformResponse : function(text, xhr, elt) {
+          var mt = htmx.closest(elt, "[mustache-template]");
+          if (mt) {
+            // manipulate the json and create my final data object.
+            var data = JSON.parse(text);
+            var templateName = mt.getAttribute('mustache-template');
+            var template = htmx.find('#' + templateName).innerHTML;
+            return Mustache.render(template, {data: data, pokeurl: pokeurl()});
+          }
+          return text;
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="container" align="center" style="padding-top: 65px;">
       <h1>
         Pokébutt!
       </h1>
-      <img id="butt" />
-      <h3 id="name"></h3>
-      <button id="button" class="button">
-        Get a random Pokebutt
-      </button>
+
+      <div hx-ext="client-side-templates">
+        <div id="content">
+          <img id="butt" />
+          <h3 id="name"></h3>
+          <button
+            mustache-template="my-mustache-template"
+            hx-target="#content"
+            hx-get=""
+            hx-trigger="load"
+            id="button"
+            class="button">
+            Get a random Pokebutt
+          </button>
+          <script>
+            // Initial load
+            document.getElementById("button").setAttribute('hx-get', pokeurl());
+          </script>
+        </div>
+
+        <script id="my-mustache-template" type="x-tmpl-mustache">
+          <img id="butt" src="{{data.sprites.back_default}}" />
+          <h3 id="name">{{data.name}} butt</h3>
+          <button
+            mustache-template="my-mustache-template"
+            hx-target="#content"
+            hx-get="{{pokeurl}}"
+            hx-trigger="click"
+            id="button"
+            class="button">
+            Get a random Pokebutt
+          </button>
+        </script>
+      </div>
+
+      <script type="text/javascript">
+        document.body.addEventListener('afterRequest.htmx', function(evt) {
+          // When an image finishes loading
+          console.log("EVT:")
+          console.log(evt);
+        })
+      </script>
+
       <p id="credit">
         This is an <a href="https://htmx.org/">HTMX</a>-based clone of <a href="https://pokebutt.herokuapp.com">Laura Do's original Pokebutt app.</a>
       </p>
-      <div
-        id="initialstate"
-        style="display: none;"
-        hx-trigger="load"
-        hx-post="/load">
-      </div>
     </div>
+
+  </body>
 </html>
